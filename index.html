@@ -27,6 +27,8 @@
         v-on:click="counter--"
       >Reduce</button>
       <p>Result: {{ counter }}</p>
+      <input type="text" v-on:input="setName">
+      <p>Name: {{ name }}</p>
     </section>
   </body>
 </html>
