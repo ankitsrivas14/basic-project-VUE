@@ -14,16 +14,49 @@
   </head>
   <body>
     <header>
-      <h1>Vue Course Goals</h1>
+      <h1>Monster Slayer</h1>
     </header>
-    <section id="user-goals">
-      <h2>My course goals</h2>
-      <input type="text" />
-      <button>Add Goal</button>
-      <p>No goals have been added yet - please start adding some!</p>
-      <ul>
-        <li>Goal</li>
-      </ul>
-    </section>
+    <div id="game">
+      <section id="monster" class="container">
+        <h2>Monster Health</h2>
+        <div class="healthbar">
+          <div class="healthbar__value" :style="monsterBarStyle"></div>
+        </div>
+      </section>
+      <section id="player" class="container">
+        <h2>Your Health</h2>
+        <div class="healthbar">
+          <div class="healthbar__value" :style="playerBarStyle"></div>
+        </div>
+      </section>
+      <section class="container" v-if="winner">
+        <h2>Game Over!</h2>
+        <h3 v-if="winner === 'draw'">It's a draw</h3>
+        <h3 v-else-if="winner === 'player'">You won</h3>
+        <h3 v-else-if="winner === 'monster'">You lost</h3>
+        <button @click="startGame">Start Game</button>
+      </section>
+      <section id="controls" v-else>
+        <button @click="attackMonster">ATTACK</button>
+        <button @click="specialAttack" :disabled="specialAttackDisabled">SPECIAL ATTACK</button>
+        <button @click="healPlayer">HEAL</button>
+        <button @click="surrenderGame">SURRENDER</button>
+      </section>
+      <section id="log" class="container">
+        <h2>Battle Log</h2>
+        <ul>
+          <li v-for="log in logMessages">
+            <span 
+              :class="log.actionBy === 'player' ? 'log--player' : 'log--monster'"
+            >
+              {{log.actionBy === 'player' ? 'Player' : 'Monster'}}
+            </span>
+
+            <span v-if="log.actionType === 'heal'"> heals himself for <span class="log--heal">{{log.actionValue}}</span></span>
+            <span v-else> attacks and deals <span class="log--damage">{{log.actionValue}}</span></span>
+          </li>
+        </ul>
+      </section>
+    </div>
   </body>
 </html>
